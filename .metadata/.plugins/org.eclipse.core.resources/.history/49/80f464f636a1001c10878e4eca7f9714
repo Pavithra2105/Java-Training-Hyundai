@@ -1,0 +1,160 @@
+package Student_Details_JDBC;
+
+import java.sql.*;
+import java.util.Scanner;
+
+ class Student_JDBC_Example {
+	 
+	 public static void main(String[] args) throws ClassNotFoundException, SQLException {
+	 
+	 Connection con =getConnection(); 
+	 Scanner sc = new Scanner(System.in);
+	 
+	 create_student_table(con);
+	 create_student_Parent_table(con);
+	 
+	int ch;
+	 
+	 do {
+		 System.out.println("1. Create Student Details:");
+         System.out.println("2. Enter Student Parent Details");
+         System.out.println("3. Enter Subject Makrs of the student");
+         System.out.println("4. Enter Student leave details");
+         System.out.println("5. Enter Staff Details");
+         System.out.println("6. Exit the program");
+
+          ch = sc.nextInt();
+
+         switch (ch) {
+             case 1:
+            	 insert_into_Student_table(con, sc);
+                 break;
+                 
+             case 2:
+            	 insert_Student_Parent(con , sc);
+            	 break;
+
+             default:
+                 System.out.println("Please Try Again");
+                 break;
+         }
+     }while(ch!=0);
+
+     sc.close();
+     con.close();
+     }
+
+	private static Connection getConnection() throws SQLException, ClassNotFoundException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_staff_db","root","Manoj@1999");
+
+        return con;
+	}
+	public static void create_student_table(Connection con) {
+        try {
+            String create_Student_table_query = "CREATE TABLE student_in(student_id INTEGER PRIMARY KEY, first_name VARCHAR(255) NOT NULL, second_name VARCHAR(255) NOT NULL, cont_num VARCHAR(255) NOT NULL, gender VARCHAR(8) NOT NULL)";
+
+            Statement stmt = con.createStatement();
+
+            stmt.executeUpdate(create_Student_table_query);
+
+            System.out.println("Student database created successfully");
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+    }
+	public static void insert_into_Student_table(Connection con, Scanner sc) {
+		try {
+            
+			
+            System.out.println("Enter the Student ID : ");
+            int stu_id = sc.nextInt();
+            System.out.println("Enter your first name : ");
+            String f_name = sc.next();
+            System.out.println("Enter your Last name : ");
+            String s_name = sc.next();
+            System.out.println("Enter your Contact Number : ");
+            String c_num = sc.next();
+            System.out.println("Gender : ");
+            String gen = sc.next();
+            
+            String create_Student_query = "insert into student_in(student_id, first_name, second_name, cont_num, gender) values (?,?,?,?,?)";
+            
+            
+            PreparedStatement pstmt = con.prepareStatement(create_Student_query);
+            
+            pstmt.setInt(1, stu_id);
+            pstmt.setString(2, f_name);
+            pstmt.setString(3, s_name);
+            pstmt.setString(4, c_num);
+            pstmt.setString(5, gen);
+        
+            pstmt.executeUpdate();
+            System.out.println("Data inserted successfully");
+           
+		}catch(Exception e) {
+			System.out.println("Error: " + e);
+		}	
+	}
+	public static void create_student_Parent_table(Connection con) {
+        try {
+            String create_Student_table_query = "CREATE TABLE student_parent(student_id INTEGER PRIMARY KEY, father_name VARCHAR(255) NOT NULL, mother_name VARCHAR(255) NOT NULL, father_contact_number VARCHAR(255) NOT NULL)";
+
+            Statement stmt = con.createStatement();
+
+            stmt.executeUpdate(create_Student_table_query);
+
+            System.out.println("Studen_parents details Table created successfully");
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+    }
+	
+	public static void insert_Student_Parent(Connection con, Scanner sc) {
+		try {
+			String create_Student_Parent_Details = "insert into student_parent(Student_id, father_name, mother_name, father_contact_number) values (?,?,?,?)";
+		
+			System.out.println("Enter Student ID : ");
+			int student_id = sc.nextInt();
+			System.out.println("Enter Student's Father name :");
+			String father_name = sc.next();
+			System.out.println("Enter Student's mother name :");
+			String mother_name = sc.next();
+			System.out.println("Enter Student's mother name :");
+			String fathers_contact_number = sc.next();
+			
+			PreparedStatement pstmt = con.prepareStatement(create_Student_Parent_Details);
+			
+			pstmt.setInt(1, student_id);
+            pstmt.setString(2, father_name);
+            pstmt.setString(3, mother_name);
+            pstmt.setString(4, fathers_contact_number);
+           
+            pstmt.executeUpdate();
+            System.out.println("Data inserted successfully");
+			
+		}catch(Exception e) {
+			System.out.println("Error: " + e);
+		}
+	}
+	
+	public static void display_student_parent_data(Connection con,Scanner sc) {
+		try {
+			String view_student_parent_data = "SELECT student_id, father_name, mother_name, fathers_contact_number FROM student_parent";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(view_student_parent_data);
+			if (!rs.isBeforeFirst()) {
+                System.out.println("No data");
+            } else {
+                System.out.println("Student ID  |  Father's name  |  Mother's name  | Father's Contect Number ");
+                while (rs.next())
+                    System.out.println(rs.getInt(1) + "  " + rs.getString(2) + " " + rs.getString(3)+ "" + rs.getString(4));
+            }
+		}catch(Exception e) {
+			System.out.println("Error : "+e);
+		}
+	}
+}

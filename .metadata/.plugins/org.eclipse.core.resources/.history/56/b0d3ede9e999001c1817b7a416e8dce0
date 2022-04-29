@@ -1,0 +1,11 @@
+package ScannerAssessment;
+
+public class Capitalword {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println(StringFormatter.capitalizeWord("my name is khan"));  
+	    System.out.println(StringFormatter.capitalizeWord("I am sonoo jaiswal"));  
+	}
+
+}

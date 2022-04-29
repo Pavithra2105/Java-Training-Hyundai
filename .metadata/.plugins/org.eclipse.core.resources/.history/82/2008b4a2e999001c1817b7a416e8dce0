@@ -1,0 +1,10 @@
+package ScannerAssessment;
+
+public class StringCaptical {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

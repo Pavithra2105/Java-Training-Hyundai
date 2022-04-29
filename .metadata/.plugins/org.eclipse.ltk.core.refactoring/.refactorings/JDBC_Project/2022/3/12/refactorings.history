@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move package &apos;IOStream&apos; to &apos;IOStream/src&apos;&#x0D;&#x0A;- Original project: &apos;JDBC_Project&apos;&#x0D;&#x0A;- Destination element: &apos;IOStream/src&apos;&#x0D;&#x0A;- Original element: &apos;JDBC_Project/src/IOStream&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move package" destination="=IOStream/src" element1="/src&lt;IOStream" flags="589830" fragments="1" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.movePackages" stamp="1647400772803" version="1.0"/>
+</session>

@@ -1,0 +1,98 @@
+package Student_Details_JDBC;
+
+import java.sql.*;
+import java.util.Scanner;
+
+ class Student_JDBC_Example {
+	 
+	 public static void main(String[] args) throws ClassNotFoundException, SQLException {
+	 
+	 Connection con =getConnection(); 
+	 Scanner sc = new Scanner(System.in);
+	 
+	int ch;
+	 
+	 do {
+		 System.out.println("1. Create Student Details:");
+         System.out.println("2. Enter Student Parent Details");
+         System.out.println("3. Enter Subject Makrs of the student");
+         System.out.println("4. Enter Student leave details");
+         System.out.println("5. Enter Staff Details");
+         System.out.println("6. Exit the program");
+
+          ch = sc.nextInt();
+
+         switch (ch) {
+             case 1:
+            	 insert_into_Student_table(con, sc);
+                 break;
+
+             default:
+                 System.out.println("Please Try Again");
+                 break;
+         }
+     }while(ch!=0);
+
+     sc.close();
+     
+     }
+
+	private static Connection getConnection() throws SQLException, ClassNotFoundException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_staff_db","root","Manoj@1999");
+
+        return con;
+	}
+	public static void create_student_table(Connection con) {
+        try {
+            String create_Student_table_query = "CREATE TABLE student_details(student_id INTEGER , first_name VARCHAR(255) NOT NULL, second_name VARCHAR(255) NOT NULL, cont_num VARCHAR(255) NOT NULL, gender VARCHAR(8) NOT NULL,PRIMARY KEY (`student_id`))";
+
+            Statement stmt = con.createStatement();
+
+            stmt.executeUpdate(create_Student_table_query);
+
+            System.out.println("Student database created successfully");
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+    }
+	public static void insert_into_Student_table(Connection con, Scanner sc) {
+		try {
+            String create_Student_query = "insert into student_info(student_id, first_name, second_name, cont_num, gender) values (?????)";
+            
+            System.out.println("Enter the Student ID : ");
+            int student_id = sc.nextInt();
+            System.out.println("Enter your first name : ");
+            String first_name = sc.next();
+            System.out.println("Enter your Last name : ");
+            String second_name = sc.next();
+            System.out.println("Enter your Contact Number : ");
+            String cont_num = sc.next();
+            System.out.println("Gender : ");
+            String gender = sc.next();
+            
+            PreparedStatement pstmt = con.prepareStatement(create_Student_query);
+            
+            pstmt.setInt(1, student_id);
+            pstmt.setString(2, first_name);
+            pstmt.setString(3, second_name);
+            pstmt.setString(4, cont_num);
+            pstmt.setString(5, gender);
+        
+            pstmt.executeUpdate();
+            System.out.println("Data inserted successfully");
+           
+		}catch(Exception e) {
+			System.out.println("Error: " + e);
+		}	
+	}
+	
+//	public static void insert_Student_Parent(Connection con, Scanner sc) {
+//		
+//	}
+	
+	
+	
+}

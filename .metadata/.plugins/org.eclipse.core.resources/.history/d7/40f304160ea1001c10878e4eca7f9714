@@ -1,0 +1,5 @@
+package Student_Details_JDBC;
+
+public class StudentDatabase {
+
+}
